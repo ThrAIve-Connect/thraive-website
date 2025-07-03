@@ -4,8 +4,8 @@ import { ChevronsDown, Users, Zap, Code, Heart, Eye, Mail, Linkedin, Instagram, 
 // --- MOCK DATA (Replace with your actual data) ---
 
 const teamMembers = [
- { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=AS', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve. Currently studying Computer Science at Stanford University.', socials: { linkedin: '#', twitter: '#' } },
-  { name: 'Priya Patel', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PP', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development. MIT student.', socials: { linkedin: '#', twitter: '#' } },
+ { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=AS', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve. Loves to .', socials: { linkedin: '#', twitter: '#' } },
+  { name: 'TO Be Filled', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PP', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development. MIT student.', socials: { linkedin: '#', twitter: '#' } },
   { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=BC', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at UC Berkeley.', socials: { linkedin: '#', twitter: '#' } },
   { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=CW', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at Johns Hopkins University.', socials: { linkedin: '#', twitter: '#' } },
 ]
@@ -31,7 +31,7 @@ const pastEvents = [
         title: 'Intro to Generative AI for Social Impact',
         description: 'Our inaugural webinar featuring a guest speaker from a leading AI research lab. We explored the fundamentals of generative AI and brainstormed applications for non-profit organizations.',
         date: 'June 15, 2025',
-        recordingUrl: 'https://www.youtube.com/' // Example URL
+        recordingUrl: 'https://youtu.be/16QUs5ypwLA' // Example URL
     }
 ];
 
@@ -94,7 +94,7 @@ const Header = ({ currentPage, setCurrentPage }) => {
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('home')}>
           <img src="transparent-white.png" alt="ThrAIve Logo" className="h-14 w-14" />
-          <span className="text-2xl font-bold text-white">ThrAIve</span>
+          {/* <span className="text-2xl font-bold text-white">ThrAIve</span> */}
         </div>
         <nav className="hidden md:flex space-x-8">
           {navLinks.map((link) => (
