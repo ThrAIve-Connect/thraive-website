@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react'; // FIX: Removed unused 'useEffect'
 import { ChevronsDown, Users, Zap, Code, Heart, Eye, Mail, Linkedin, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react';
 
 // --- MOCK DATA (Replace with your actual data) ---
 
 const teamMembers = [
-  { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=AS', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve. Currently studying Computer Science at Stanford University.', socials: { linkedin: '#', twitter: '#' } },
+ { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=AS', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve. Currently studying Computer Science at Stanford University.', socials: { linkedin: '#', twitter: '#' } },
   { name: 'Priya Patel', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PP', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development. MIT student.', socials: { linkedin: '#', twitter: '#' } },
   { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=BC', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at UC Berkeley.', socials: { linkedin: '#', twitter: '#' } },
   { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=CW', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at Johns Hopkins University.', socials: { linkedin: '#', twitter: '#' } },
-];
-
+]
 const projects = [
   {
     icon: Heart,
@@ -32,7 +31,7 @@ const pastEvents = [
         title: 'Intro to Generative AI for Social Impact',
         description: 'Our inaugural webinar featuring a guest speaker from a leading AI research lab. We explored the fundamentals of generative AI and brainstormed applications for non-profit organizations.',
         date: 'June 15, 2025',
-        recordingUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' // Example URL
+        recordingUrl: 'https://www.youtube.com/' // Example URL
     }
 ];
 
@@ -94,8 +93,8 @@ const Header = ({ currentPage, setCurrentPage }) => {
     <header className="bg-gray-900 bg-opacity-80 backdrop-blur-md sticky top-0 left-0 right-0 z-50 transition-all duration-300">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('home')}>
-          <img src="transparent-white.png" alt="ThrAIve Logo" className="h-20 w-20" />
-          {/* <span className="text-2xl font-bold text-white">ThrAIve</span> */}
+          <img src="transparent-white.png" alt="ThrAIve Logo" className="h-14 w-14" />
+          <span className="text-2xl font-bold text-white">ThrAIve</span>
         </div>
         <nav className="hidden md:flex space-x-8">
           {navLinks.map((link) => (
@@ -138,17 +137,18 @@ const Footer = () => (
     <div className="container mx-auto px-6 py-8">
       <div className="flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center space-x-2 mb-4 md:mb-0">
-          <img src="transparent-white.png" alt="ThrAIve Logo" className="h-8 w-8" />
+          <img src="transparent-white.png" alt="ThrAIve Logo" className="h-10 w-10" />
           <span className="text-xl font-bold text-white">ThrAIve</span>
         </div>
         <div className="text-gray-400 mb-4 md:mb-0">
           &copy; {new Date().getFullYear()} ThrAIve. All rights reserved.
         </div>
+        {/* FIX: Replaced '#' with valid placeholder URLs */}
         <div className="flex space-x-6">
-          <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors"><Mail className="w-6 h-6" /></a>
-          <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors"><Linkedin className="w-6 h-6" /></a>
-          <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors"><Instagram className="w-6 h-6" /></a>
-          <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors"><Twitter className="w-6 h-6" /></a>
+          <a href="mailto:contact@thraive.ai" className="text-gray-400 hover:text-blue-400 transition-colors"><Mail className="w-6 h-6" /></a>
+          <a href="https://www.linkedin.com/" className="text-gray-400 hover:text-blue-400 transition-colors"><Linkedin className="w-6 h-6" /></a>
+          <a href="https://www.instagram.com/" className="text-gray-400 hover:text-blue-400 transition-colors"><Instagram className="w-6 h-6" /></a>
+          <a href="https://twitter.com/" className="text-gray-400 hover:text-blue-400 transition-colors"><Twitter className="w-6 h-6" /></a>
         </div>
       </div>
     </div>
@@ -163,12 +163,12 @@ const HomePage = ({ setCurrentPage }) => {
     const scrollToRef = (ref) => ref.current?.scrollIntoView({ behavior: 'smooth' });
 
     return (
-        <>
+        <React.Fragment>
             <HeroSection scrollToAbout={() => scrollToRef(aboutRef)} />
             <AboutSection ref={aboutRef} setCurrentPage={setCurrentPage} />
             <InitiativesSection />
             <ContactSection />
-        </>
+        </React.Fragment>
     );
 };
 
@@ -212,8 +212,8 @@ const ProjectsPage = () => (
             <div className="grid md:grid-cols-1 gap-10 mb-20">
                 {projects.map((project, index) => (
                     <div key={index} className="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border border-gray-700 flex flex-col md:flex-row items-center">
-                        <div className="p-4 bg-gray-700">
-                            <project.icon className="w-12 h-12 text-blue-400" />
+                        <div className="p-4 bg-gray-700 flex-shrink-0 self-stretch flex items-center">
+                            <project.icon className="w-12 h-12 text-blue-400 mx-4" />
                         </div>
                         <div className="p-8">
                             <div className="flex items-center mb-2">
@@ -369,4 +369,3 @@ const ContactSection = ({ isPage = false }) => (
     </div>
   </section>
 );
-// --- RENDERING THE APP ---
