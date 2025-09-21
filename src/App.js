@@ -4,10 +4,10 @@ import { ChevronsDown, Users, Zap, Code, Heart, Eye, Mail, Linkedin, Instagram, 
 // --- MOCK DATA (Replace with your actual data) ---
 
 const teamMembers = [
- { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=SV', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve.', socials: { linkedin: '#', twitter: '#' } },
+ { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=SV', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve.', socials: { linkedin: 'https://www.linkedin.com/in/srikar-vemuri-487997235/', twitter: '#' } },
   { name: 'TO Be Filled', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development.', socials: { linkedin: '#', twitter: '#' } },
-  { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at a High School in Sacramento, CA.', socials: { linkedin: '#', twitter: '#' } },
-  { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=NC', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at a High School in Folsom, CA.', socials: { linkedin: '#', twitter: '#' } },
+  { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at a High School in Sacramento, CA.', socials: { linkedin: 'https://www.linkedin.com/in/praneel-vema-851669313/', twitter: '#' } },
+  { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=NC', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at a High School in Folsom, CA.', socials: { linkedin: 'https://www.linkedin.com/in/neeraj-chandekar-82a1b1238/', twitter: '#' } },
 ]
 const projects = [
   {
