@@ -4,10 +4,10 @@ import { ChevronsDown, Users, Zap, Code, Heart, Eye, Mail, Linkedin, Instagram, 
 // --- MOCK DATA (Replace with your actual data) ---
 
 const teamMembers = [
- { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=AS', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve. Loves to .', socials: { linkedin: '#', twitter: '#' } },
-  { name: 'TO Be Filled', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PP', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development. MIT student.', socials: { linkedin: '#', twitter: '#' } },
-  { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=BC', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at UC Berkeley.', socials: { linkedin: '#', twitter: '#' } },
-  { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=CW', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at Johns Hopkins University.', socials: { linkedin: '#', twitter: '#' } },
+ { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=SV', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve.', socials: { linkedin: '#', twitter: '#' } },
+  { name: 'TO Be Filled', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development.', socials: { linkedin: '#', twitter: '#' } },
+  { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at a High School in Sacramento, CA.', socials: { linkedin: '#', twitter: '#' } },
+  { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=NC', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at a High School in Folsom, CA.', socials: { linkedin: '#', twitter: '#' } },
 ]
 const projects = [
   {
