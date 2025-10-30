@@ -1,21 +1,45 @@
 import React, { useState, useRef } from 'react'; // FIX: Removed unused 'useEffect'
 import { ChevronsDown, Users, Zap, Code, Heart, Eye, Mail, Linkedin, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import markerIconPng from 'leaflet/dist/images/marker-icon.png';
+import markerShadowPng from 'leaflet/dist/images/marker-shadow.png';
+
+// Fix Leaflet's default icon paths for webpack builds
+const DefaultIcon = L.icon({
+  iconUrl: markerIconPng,
+  shadowUrl: markerShadowPng,
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  iconSize: [25, 41],
+});
+L.Marker.prototype.options.icon = DefaultIcon;
 
 // --- MOCK DATA (Replace with your actual data) ---
 
 const teamMembers = [
- { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=SV', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve.', socials: { linkedin: 'https://www.linkedin.com/in/srikar-vemuri-487997235/', twitter: '#' } },
-  { name: 'TO Be Filled', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Leads the technical development of all ThrAIve projects, with expertise in machine learning and full-stack development.', socials: { linkedin: '#', twitter: '#' } },
+  { name: 'Srikar Vemuri', role: 'Founder & CEO', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=SV', bio: 'A passionate advocate for accessible AI education, driving the vision and strategy of ThrAIve.', socials: { linkedin: 'https://www.linkedin.com/in/srikar-vemuri-487997235/', twitter: '#' } },
+  { name: 'Noel Yap', role: 'Chief Technology Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=NY', bio: 'A junior at Folsom High School who optimizes our tech stack and strategically implements AI applications for maximum impact.', socials: { linkedin: '#', twitter: '#' } },
   { name: 'Praneel Vema', role: 'Head of Community', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=PV', bio: 'Fosters our vibrant community by organizing events, managing communications, and ensuring every member feels welcome. Studies at a High School in Sacramento, CA.', socials: { linkedin: 'https://www.linkedin.com/in/praneel-vema-851669313/', twitter: '#' } },
   { name: 'Neeraj Chandekar', role: 'Director of Non-Profit Outreach', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=NC', bio: 'Connects ThrAIve with non-profit organizations, leading projects that apply AI for social good. A student at a High School in Folsom, CA.', socials: { linkedin: 'https://www.linkedin.com/in/neeraj-chandekar-82a1b1238/', twitter: '#' } },
+  { name: 'Daksh Jain', role: 'Events & Outreach Officer', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=DJ', bio: 'Coordinates organizational events and expands our reach. Currently a student at Mountain House High School.', socials: { linkedin: '#', twitter: '#' } },
 ]
+const featuredSpeakers = [
+  { name: 'Gokul Prasad', role: 'Data Science at NY Times', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=GP' },
+  { name: 'Dr. Robert Chun', role: 'Professor at SJSU', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=RC' },
+  { name: 'Shailesh', role: 'CEO of CloudFarix', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=SC' },
+  { name: 'Eric Talbert', role: 'CEO of MedCycle', imageUrl: 'https://placehold.co/300x300/1a202c/718096?text=ET' },
+];
+
 const projects = [
   {
     icon: Heart,
     title: 'HART Nonprofit Connect',
-    status: 'Completed',
-    description: 'Developed an AI-powered social media content generator for HART of Folsom. This tool automates the creation of flyers and promotional materials, significantly boosting their outreach capabilities and allowing them to focus more on their core mission.',
+    status: 'Featured',
+    description: 'Developed an AI-powered social media content generator for HART of Folsom. This groundbreaking project, featured in the Folsom Telegraph (publishing Nov 7th), demonstrates the impact of AI in nonprofit operations.',
     tech: ['Python Flask', 'Canva API', 'OpenAI API', 'Unsplash API'],
+    featured: true,
   },
   {
     icon: Eye,
@@ -41,6 +65,42 @@ const initiatives = [
     { icon: Heart, title: "AI for Social Good", description: "Promoting the use of AI for nonprofit projects, providing resources and support to make a real-world impact." },
     { icon: Code, title: "Hackathons", description: "High-energy hackathons designed to foster creativity, problem-solving, and innovation in AI." },
 ];
+
+// Leaflet-based interactive map (OpenStreetMap tiles via CartoDB Dark) with markers
+const LeafletMap = () => {
+  const markers = [
+    { id: 'norcal', name: 'NorCal', position: [37.7749, -122.4194], description: 'Northern California hub' },
+    { id: 'bay', name: 'Bay Area', position: [37.8044, -122.2711], description: 'Bay Area chapter' },
+    { id: 'texas', name: 'Texas', position: [30.2672, -97.7431], description: 'Texas chapter' },
+    { id: 'nj', name: 'New Jersey', position: [40.0583, -74.4057], description: 'New Jersey outreach' },
+    { id: 'wa', name: 'Washington State', position: [47.6062, -122.3321], description: 'Washington State chapter' },
+    { id: 'uk', name: 'United Kingdom', position: [51.5074, -0.1276], description: 'United Kingdom chapter' },
+    { id: 'india', name: 'India', position: [20.5937, 78.9629], description: 'India chapter' },
+  ];
+
+  // center map roughly between the markers
+  const center = [30, 0];
+
+  return (
+    <MapContainer center={center} zoom={2} scrollWheelZoom={false} className="w-full h-full rounded-lg">
+      {/* Dark basemap to match site theme */}
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      />
+      {markers.map((m) => (
+        <Marker key={m.id} position={m.position}>
+          <Popup>
+            <div className="text-sm">
+              <strong>{m.name}</strong>
+              <div className="text-xs">{m.description}</div>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
+  );
+};
 
 
 // --- CORE APP STRUCTURE ---
@@ -77,9 +137,9 @@ export default function App() {
 const Header = ({ currentPage, setCurrentPage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navLinks = [
-    { id: 'home', title: 'Home' },
-    { id: 'team', title: 'Our Team' },
-    { id: 'projects', title: 'Projects & Events' },
+    { id: 'home', title: 'Home', subsections: ['about', 'initiatives'] },
+    { id: 'team', title: 'Our Team', subsections: ['leadership', 'global-presence'] },
+    { id: 'projects', title: 'Projects & Events', subsections: ['featured-projects', 'media-coverage', 'guest-speakers', 'past-events'] },
     { id: 'contact', title: 'Contact' },
   ];
 
@@ -173,7 +233,7 @@ const HomePage = ({ setCurrentPage }) => {
 };
 
 const TeamPage = () => (
-    <section id="team-page" className="py-20 md:py-28 bg-gray-900">
+    <section id="team" className="py-20 md:py-28 bg-gray-900" itemScope itemType="http://schema.org/Organization">
         <div className="container mx-auto px-6">
             <div className="text-center mb-16">
                 <h1 className="text-4xl md:text-5xl font-extrabold text-white">Meet the Core Team</h1>
@@ -203,8 +263,8 @@ const ProjectsPage = () => (
     <div className="bg-gray-900 py-20 md:py-28">
         <div className="container mx-auto px-6">
             {/* Projects Section */}
-            <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white">Our Projects</h1>
+            <div id="featured-projects" className="text-center mb-16" itemScope itemType="http://schema.org/Organization">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-white" itemProp="name">Our Projects</h1>
                 <p className="text-lg text-gray-400 mt-4 max-w-3xl mx-auto">
                     Applying AI to solve real-world problems and support our community partners.
                 </p>
@@ -229,6 +289,32 @@ const ProjectsPage = () => (
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Featured Impact Section */}
+            <div className="bg-blue-600/10 rounded-2xl p-8 mb-16 border border-blue-500/20">
+                <div className="flex items-center mb-4">
+                    <span className="bg-blue-500/20 text-blue-300 px-4 py-1 rounded-full text-sm font-semibold">Featured in Media</span>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Folsom Telegraph Feature</h3>
+                <p className="text-gray-300">
+                    Our groundbreaking work with HART of Folsom has caught media attention! Read about our one-year journey and impact in the upcoming Folsom Telegraph article.
+                    <span className="block mt-2 text-blue-400">Publishing November 7th, 2025</span>
+                </p>
+            </div>
+
+            {/* Featured Speakers Section */}
+            <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-8">Featured Speakers</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {featuredSpeakers.map((speaker, index) => (
+                        <div key={index} className="bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-colors">
+                            <img src={speaker.imageUrl} alt={speaker.name} className="w-24 h-24 rounded-full mx-auto mb-4" />
+                            <h4 className="text-lg font-bold text-white">{speaker.name}</h4>
+                            <p className="text-sm text-blue-400">{speaker.role}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Past Events Section */}
@@ -257,18 +343,21 @@ const ProjectsPage = () => (
 
 
 const HeroSection = ({ scrollToAbout }) => (
-  <section id="home" className="h-[90vh] flex items-center justify-center bg-grid-gray-700/[0.2] relative">
+  <section id="home" className="h-[90vh] flex items-center justify-center bg-grid-gray-700/[0.2] relative" itemScope itemType="http://schema.org/Organization">
+    <meta itemProp="name" content="ThrAIve" />
+    <meta itemProp="url" content="https://thraive.ai" />
+    <meta itemProp="founder" content="Srikar Vemuri" />
     <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-gray-900 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
     <div className="text-center z-10 px-4">
       <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-4 leading-tight">
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-yellow-300">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-yellow-300" itemProp="slogan">
           Innovate. Collaborate. Inspire.
         </span>
         <br />
         The Future of AI is Here.
       </h1>
-      <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-        ThrAIve is a student-led organization dedicated to exploring the frontiers of Artificial Intelligence, fostering a vibrant community, and applying AI for social good.
+      <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8" itemProp="description">
+        ThrAIve is a student-led, California-based organization, dedicated to exploring the frontiers of Artificial Intelligence, fostering a vibrant community, and applying AI for social good.
       </p>
       <button onClick={scrollToAbout} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
         Discover More
@@ -286,8 +375,36 @@ const AboutSection = React.forwardRef(({ setCurrentPage }, ref) => (
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-extrabold text-white">About ThrAIve</h2>
         <p className="text-lg text-gray-400 mt-4 max-w-3xl mx-auto">
-          We are a nationwide community of <span className="text-blue-400 font-bold">90+ passionate students</span>, united by a curiosity for AI and a drive to make a difference.
+          Making waves globally with <span className="text-blue-400 font-bold">150+ students reached</span> and <span className="text-blue-400 font-bold">5+ industry-leading speakers</span>.
         </p>
+      </div>
+      
+      {/* Impact Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        <div className="text-center p-6 bg-gray-800 rounded-xl">
+          <div className="text-3xl font-bold text-blue-400 mb-2">150+</div>
+          <div className="text-gray-400">Students Reached</div>
+        </div>
+        <div className="text-center p-6 bg-gray-800 rounded-xl">
+          <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
+          <div className="text-gray-400">Guest Speakers</div>
+        </div>
+        <div className="text-center p-6 bg-gray-800 rounded-xl">
+          <div className="text-3xl font-bold text-blue-400 mb-2">7</div>
+          <div className="text-gray-400">Global Regions</div>
+        </div>
+        <div className="text-center p-6 bg-gray-800 rounded-xl">
+          <div className="text-3xl font-bold text-green-400 mb-2">New</div>
+          <div className="text-gray-400">FHS Chapter</div>
+        </div>
+      </div>
+
+      {/* Global Presence Map */}
+      <div className="mb-16 p-8 bg-gray-800 rounded-2xl">
+        <h3 className="text-2xl font-bold text-white mb-6 text-center">Our Global Reach</h3>
+        <div className="w-full h-[400px]">
+          <LeafletMap />
+        </div>
       </div>
       <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div className="space-y-6">
