@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'; // FIX: Removed unused 'useEffect'
+import posts from './data/posts';
 import { ChevronsDown, Users, Zap, Code, Heart, Eye, Mail, Linkedin, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -116,6 +117,8 @@ export default function App() {
         return <TeamPage />;
       case 'projects':
         return <ProjectsPage />;
+      case 'blog':
+        return <BlogPage />;
       case 'contact':
         return <ContactSection isPage={true} />;
       default:
@@ -134,12 +137,13 @@ export default function App() {
 
 // --- HEADER & FOOTER ---
 
-const Header = ({ currentPage, setCurrentPage }) => {
+  const Header = ({ currentPage, setCurrentPage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navLinks = [
     { id: 'home', title: 'Home', subsections: ['about', 'initiatives'] },
     { id: 'team', title: 'Our Team', subsections: ['leadership', 'global-presence'] },
     { id: 'projects', title: 'Projects & Events', subsections: ['featured-projects', 'media-coverage', 'guest-speakers', 'past-events'] },
+    { id: 'blog', title: 'Blog' },
     { id: 'contact', title: 'Contact' },
   ];
 
@@ -189,6 +193,60 @@ const Header = ({ currentPage, setCurrentPage }) => {
             </div>
         )}
     </header>
+  );
+};
+
+// --- BLOG COMPONENTS ---
+
+const BlogPage = () => {
+  const [selected, setSelected] = useState(null);
+
+  return (
+    <section id="blog" className="py-20 md:py-28 bg-gray-900">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white">ThrAIve Blog & Newsletter</h1>
+          <p className="text-lg text-gray-400 mt-4 max-w-3xl mx-auto">Short articles, research summaries, and newsletter pieces from our student contributors.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {posts.map((p) => (
+            <article key={p.id} className="bg-gray-800 p-6 rounded-xl" onClick={() => setSelected(p)} style={{cursor: 'pointer'}}>
+              <h3 className="text-2xl font-bold text-white mb-2">{p.title}</h3>
+              <div className="text-sm text-gray-400 mb-4">By {p.author} — {p.date}</div>
+              <p className="text-gray-300">{p.excerpt}</p>
+              <div className="mt-4">
+                <a href={p.pdfPath} target="_blank" rel="noopener noreferrer" className="inline-block text-blue-400 font-semibold">Open full article / printable view</a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {selected && (
+          <div className="mt-12 bg-gray-800 p-8 rounded-2xl">
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">{selected.title}</h2>
+                <div className="text-sm text-gray-400 mb-4">By {selected.author} — {selected.date}</div>
+              </div>
+              <div>
+                <button onClick={() => setSelected(null)} className="text-gray-300 hover:text-white">Close</button>
+              </div>
+            </div>
+
+            <div className="prose prose-invert max-w-none mt-6 text-gray-200">
+              {selected.content.map((para, i) => (
+                <p key={i} style={{whiteSpace: 'pre-line'}}>{para}</p>
+              ))}
+            </div>
+
+            <div className="mt-6">
+              <a href={selected.pdfPath} target="_blank" rel="noopener noreferrer" className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Open printable/HTML view</a>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 
